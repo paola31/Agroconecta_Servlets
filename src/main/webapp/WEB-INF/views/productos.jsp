@@ -16,7 +16,10 @@
             <p class="eyebrow">Agroconecta</p>
             <h1>Inventario de productos</h1>
         </div>
-        <a class="button primary" href="${pageContext.request.contextPath}/productos?action=nuevo">Nuevo producto</a>
+        <div class="header-actions">
+            <a class="button secondary" href="${pageContext.request.contextPath}/stock">Stock</a>
+            <a class="button primary" href="${pageContext.request.contextPath}/productos?action=nuevo">Nuevo producto</a>
+        </div>
     </section>
 
     <section class="panel">

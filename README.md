@@ -2,7 +2,7 @@
 
 Proyecto Java Web para la evidencia `GA7-220501096-AA2-EV02 - modulos de software codificados y probados`.
 
-Esta version implementa un CRUD de productos usando:
+Esta version implementa modulos CRUD de productos y stock usando:
 
 - Java 17
 - Maven
@@ -18,10 +18,10 @@ La guia solicita formularios HTML con Servlets, uso de metodos GET y POST, eleme
 
 En este proyecto:
 
-- `ProductoServlet` recibe las peticiones HTTP.
-- Los metodos `doGet` y `doPost` manejan consulta, formularios, creacion, actualizacion y desactivacion.
+- `ProductoServlet` y `StockServlet` reciben las peticiones HTTP.
+- Los metodos `doGet` y `doPost` manejan consulta, formularios, creacion, actualizacion, desactivacion y eliminacion.
 - Las vistas JSP estan en `src/main/webapp/WEB-INF/views`.
-- `ProductoDAO` realiza la conexion y operaciones SQL usando JDBC.
+- `ProductoDAO` y `StockDAO` realizan la conexion y operaciones SQL usando JDBC.
 - `DatabaseConnection` centraliza la conexion con MySQL.
 
 ## Requisitos
@@ -87,8 +87,26 @@ Desde esa pantalla se puede:
 - Crear un producto con el boton `Nuevo producto`.
 - Editar un producto con el boton `Editar`.
 - Desactivar un producto con el boton `Desactivar`.
+- Navegar al modulo de stock con el boton `Stock`.
 
 La eliminacion se implemento como borrado logico: el registro no se elimina fisicamente, sino que el campo `activo` cambia a `false`.
+
+## Probar el modulo de stock
+
+Abrir en el navegador:
+
+```text
+http://localhost:8082/stock
+```
+
+Desde esa pantalla se puede:
+
+- Consultar registros de stock con nombres reales de usuarios y productos.
+- Crear un registro con el boton `Nuevo stock`.
+- Editar la cantidad disponible.
+- Eliminar un registro de stock.
+
+El modulo de stock usa `INNER JOIN` para relacionar las tablas `stock`, `usuarios` y `productos`.
 
 ## Probar con curl
 
@@ -116,16 +134,45 @@ curl -X POST http://localhost:8082/productos \
   --data "action=desactivar&id=100"
 ```
 
+Crear stock:
+
+```bash
+curl -X POST http://localhost:8082/stock \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data "action=crear&usuarioId=1&productoId=100&cantidad=7.500"
+```
+
+Actualizar stock:
+
+```bash
+curl -X POST http://localhost:8082/stock \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data "action=actualizar&id=1&usuarioId=2&productoId=100&cantidad=15.000"
+```
+
+Eliminar stock:
+
+```bash
+curl -X POST http://localhost:8082/stock \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data "action=eliminar&id=1"
+```
+
 ## Estructura principal
 
 ```text
 src/main/java/com/agroconecta/config/DatabaseConnection.java
 src/main/java/com/agroconecta/dao/ProductoDAO.java
+src/main/java/com/agroconecta/dao/StockDAO.java
 src/main/java/com/agroconecta/model/Producto.java
+src/main/java/com/agroconecta/model/Stock.java
 src/main/java/com/agroconecta/servlet/ProductoServlet.java
+src/main/java/com/agroconecta/servlet/StockServlet.java
 src/main/webapp/index.jsp
 src/main/webapp/WEB-INF/views/productos.jsp
 src/main/webapp/WEB-INF/views/formulario-producto.jsp
+src/main/webapp/WEB-INF/views/stock.jsp
+src/main/webapp/WEB-INF/views/formulario-stock.jsp
 src/main/webapp/assets/css/styles.css
 ```
 
