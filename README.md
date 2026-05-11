@@ -58,6 +58,14 @@ Para levantar MySQL:
 docker compose up -d
 ```
 
+La aplicacion tiene valores locales por defecto para conectarse a MySQL. Si se necesita cambiar la conexion sin modificar el codigo, se pueden definir estas variables de entorno:
+
+```bash
+export DB_URL="jdbc:mysql://localhost:3306/Agroconecta?useSSL=false&serverTimezone=America/Bogota&allowPublicKeyRetrieval=true"
+export DB_USER="agro_backend"
+export DB_PASSWORD="agro_backend123"
+```
+
 ## Ejecutar la aplicacion
 
 Desde la carpeta del proyecto:
